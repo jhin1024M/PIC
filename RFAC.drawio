@@ -1,0 +1,99 @@
+<mxfile host="app.diagrams.net" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36" version="26.1.1">
+  <diagram name="RFAConv流程图" id="AHv620hyv0RvFyv7Yqgo">
+    <mxGraphModel dx="1562" dy="818" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="ki_k9dv2HkcOopLSZmCa-1" value="输入张量 x&#xa;[B, C_in, H, W]" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" vertex="1" parent="1">
+          <mxGeometry x="320" y="40" width="160" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="ki_k9dv2HkcOopLSZmCa-2" value="" style="endArrow=classic;html=1;exitX=0.25;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="ki_k9dv2HkcOopLSZmCa-1" target="ki_k9dv2HkcOopLSZmCa-4">
+          <mxGeometry width="50" height="50" relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="ki_k9dv2HkcOopLSZmCa-3" value="" style="endArrow=classic;html=1;exitX=0.75;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="ki_k9dv2HkcOopLSZmCa-1" target="ki_k9dv2HkcOopLSZmCa-6">
+          <mxGeometry width="50" height="50" relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="ki_k9dv2HkcOopLSZmCa-4" value="权重生成 (get_weight)&#xa;1. AvgPool2d&#xa;2. Conv2d(groups=in_channel)" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;" vertex="1" parent="1">
+          <mxGeometry x="160" y="140" width="200" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="ki_k9dv2HkcOopLSZmCa-5" value="输出: [B, C_in*(kernel_size^2), H&#39;, W&#39;]" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="160" y="200" width="200" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="ki_k9dv2HkcOopLSZmCa-6" value="特征生成 (generate_feature)&#xa;1. Conv2d(groups=in_channel)&#xa;2. BatchNorm2d + ReLU" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;" vertex="1" parent="1">
+          <mxGeometry x="440" y="140" width="200" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="ki_k9dv2HkcOopLSZmCa-7" value="输出: [B, C_in*(kernel_size^2), H&#39;, W&#39;]" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="440" y="200" width="200" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="ki_k9dv2HkcOopLSZmCa-8" value="" style="endArrow=classic;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="ki_k9dv2HkcOopLSZmCa-5" target="ki_k9dv2HkcOopLSZmCa-9">
+          <mxGeometry width="50" height="50" relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="ki_k9dv2HkcOopLSZmCa-9" value="重塑并应用Softmax&#xa;view(b, c, kernel_size^2, h, w).softmax(2)" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;" vertex="1" parent="1">
+          <mxGeometry x="160" y="250" width="200" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="ki_k9dv2HkcOopLSZmCa-10" value="权重: [B, C_in, kernel_size^2, H&#39;, W&#39;]" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="160" y="310" width="200" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="ki_k9dv2HkcOopLSZmCa-11" value="" style="endArrow=classic;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="ki_k9dv2HkcOopLSZmCa-7" target="ki_k9dv2HkcOopLSZmCa-12">
+          <mxGeometry width="50" height="50" relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="ki_k9dv2HkcOopLSZmCa-12" value="重塑为空间感受野特征&#xa;view(b, c, kernel_size^2, h, w)" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;" vertex="1" parent="1">
+          <mxGeometry x="440" y="250" width="200" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="ki_k9dv2HkcOopLSZmCa-13" value="特征: [B, C_in, kernel_size^2, H&#39;, W&#39;]" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="440" y="310" width="200" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="ki_k9dv2HkcOopLSZmCa-14" value="" style="endArrow=classic;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;" edge="1" parent="1" source="ki_k9dv2HkcOopLSZmCa-10">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="260" y="360" as="sourcePoint" />
+            <mxPoint x="400" y="370" as="targetPoint" />
+            <Array as="points">
+              <mxPoint x="260" y="350" />
+              <mxPoint x="400" y="350" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="ki_k9dv2HkcOopLSZmCa-15" value="" style="endArrow=classic;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;" edge="1" parent="1" source="ki_k9dv2HkcOopLSZmCa-13">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="540" y="360" as="sourcePoint" />
+            <mxPoint x="400" y="370" as="targetPoint" />
+            <Array as="points">
+              <mxPoint x="540" y="350" />
+              <mxPoint x="400" y="350" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="ki_k9dv2HkcOopLSZmCa-16" value="加权特征 (feature * weighted)&#xa;[B, C_in, kernel_size^2, H&#39;, W&#39;]" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;" vertex="1" parent="1">
+          <mxGeometry x="300" y="370" width="200" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="ki_k9dv2HkcOopLSZmCa-17" value="" style="endArrow=classic;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="ki_k9dv2HkcOopLSZmCa-16" target="ki_k9dv2HkcOopLSZmCa-18">
+          <mxGeometry width="50" height="50" relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="ki_k9dv2HkcOopLSZmCa-18" value="重排特征 (rearrange)&#xa;&#39;b c (n1 n2) h w -&gt; b c (h n1) (w n2)&#39;" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;" vertex="1" parent="1">
+          <mxGeometry x="300" y="460" width="200" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="ki_k9dv2HkcOopLSZmCa-19" value="输出: [B, C_in, H&#39;*kernel_size, W&#39;*kernel_size]" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="300" y="520" width="200" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="ki_k9dv2HkcOopLSZmCa-20" value="" style="endArrow=classic;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="ki_k9dv2HkcOopLSZmCa-19" target="ki_k9dv2HkcOopLSZmCa-21">
+          <mxGeometry width="50" height="50" relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="ki_k9dv2HkcOopLSZmCa-21" value="最终卷积转换 (conv)&#xa;1. Conv2d(stride=kernel_size)&#xa;2. BatchNorm2d + ReLU" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;" vertex="1" parent="1">
+          <mxGeometry x="300" y="560" width="200" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="ki_k9dv2HkcOopLSZmCa-22" value="" style="endArrow=classic;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="ki_k9dv2HkcOopLSZmCa-21" target="ki_k9dv2HkcOopLSZmCa-23">
+          <mxGeometry width="50" height="50" relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="ki_k9dv2HkcOopLSZmCa-23" value="输出张量&#xa;[B, C_out, H&#39;, W&#39;]" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" vertex="1" parent="1">
+          <mxGeometry x="320" y="650" width="160" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="ki_k9dv2HkcOopLSZmCa-24" value="RFAConv模块流程图" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=16;fontStyle=1" vertex="1" parent="1">
+          <mxGeometry x="300" y="10" width="200" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="ki_k9dv2HkcOopLSZmCa-25" value="功能: 利用空间注意力机制增强卷积特征提取&#xa;特点: 基于组卷积实现通道独立的空间感受野注意力" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;" vertex="1" parent="1">
+          <mxGeometry x="40" y="40" width="240" height="60" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
